@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: maria-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: maria-db
+  template:
+    metadata:
+      labels:
+        app: maria-db
+    spec:
+      containers:
+        - name: maria-db
+          image: mariadb:latest
+          env:
+            - name: MARIADB_DATABASE
+              value: ums
+            - name: MARIADB_ROOT_PASSWORD
+              value: devpass
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: mariadb-persistent-volume
+              mountPath: /var/lib/mariadb
+      volumes:
+        - name: mariadb-persistent-volume
+          persistentVolumeClaim:
+            claimName: mariadb-pvc

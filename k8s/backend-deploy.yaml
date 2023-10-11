@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: p1-backend
+  labels:
+    app: p1-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: p1-backend
+  template:
+    metadata:
+      labels:
+        app: p1-backend
+    spec:
+      imagePullSecrets:
+        - name: my-registry-credentials
+      containers:
+        - name: p1-backend
+          image: ghcr.io/cs-muic/scalable-23t1-p1-tanaponboss/ums-backend:latest
+          env:
+            - name: UMS_DB_IP
+              value: maria-db
+            - name: UMS_DB_NAME
+              value: "ums"
+            - name: UMS_DB_USERNAME
+              value: "root"
+            - name: UMS_DB_PASSWORD
+              value: "devpass"
+            - name: UMS_REDIS_HOST
+              value: "redis"
+            - name: UMS_REDIS_PORT
+              value: "6379"
+          ports:
+            - containerPort: 8080
+

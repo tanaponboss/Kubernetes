@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: p1-frontend
+  labels:
+    app: p1-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: p1-frontend
+  template:
+    metadata:
+      labels:
+        app: p1-frontend
+    spec:
+      imagePullSecrets:
+        - name: my-registry-credentials
+      containers:
+        - name: p1-frontend
+          image: ghcr.io/cs-muic/scalable-23t1-p1-tanaponboss/ums-frontend:latest
+          ports:
+          - containerPort: 80
